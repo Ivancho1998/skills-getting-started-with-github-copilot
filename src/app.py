@@ -38,6 +38,42 @@ activities = {
         "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
         "max_participants": 30,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+    },
+    "Basketball Team": {
+        "description": "Competitive basketball team with regular matches",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 6:00 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Swimming Club": {
+        "description": "Swimming training and competitions",
+        "schedule": "Mondays and Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": []
+    },
+    "Art Studio": {
+        "description": "Express creativity through various art mediums",
+        "schedule": "Wednesdays, 3:30 PM - 5:30 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    "Drama Club": {
+        "description": "Theater productions and acting workshops",
+        "schedule": "Tuesdays and Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 25,
+        "participants": []
+    },
+    "Debate Team": {
+        "description": "Learn argumentation and public speaking skills",
+        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+        "max_participants": 16,
+        "participants": []
+    },
+    "Science Club": {
+        "description": "Hands-on experiments and science projects",
+        "schedule": "Fridays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": []
     }
 }
 
@@ -52,6 +88,7 @@ def get_activities():
     return activities
 
 
+
 @app.post("/activities/{activity_name}/signup")
 def signup_for_activity(activity_name: str, email: str):
     """Sign up a student for an activity"""
@@ -61,6 +98,10 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
+
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Already signed up for this activity")  
 
     # Add student
     activity["participants"].append(email)
